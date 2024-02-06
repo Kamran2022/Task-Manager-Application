@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.2/css/bootstrap.min.css}" />
+    <style>
+        body { padding-top: 100px; }
+        .navbar-custom {
+            background-color: #343a40; /* Dark grey */
+        }
+        .btn-outline-lightgrey {
+            color: #ffffff;
+            border-color: #ffffff;
+            background-color: #0082ff;
+        }
+        .btn-outline-lightgrey:hover {
+            color: #ffffff;
+            background-color: #196fd3; /* More white on hover */
+            border-color: #ffffff;
+        }
+        .table-lightgrey {
+            background-color: #ffffff; /* Light grey for table */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Task Manager</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>List Of Tasks To Do</h2>
+    <hr />
+
+    <table class="table table-bordered table-striped table-hover table-dark">
+        <thead class="bg-secondary">
+        <tr>
+            <th>Actions</th>
+            <th>Id</th>
+            <th>Description</th>
+            <th>Completed</th>
+            <th>Created</th>
+            <th>Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${todoItems}" th:class="${item.isComplete} ? 'table-success' : 'table-warning'">
+            <td>
+                <div class="btn-group btn-group-sm" role="group">
+                    <a class="btn btn-info" th:href="@{/edit/{id}(id=${item.id})}">
+                        <i class="bi bi-pencil-fill"></i> Edit</a>
+                    <a class="btn btn-danger" th:href="@{/delete/{id}(id=${item.id})}">
+                        <i class="bi bi-trash-fill"></i> Delete</a>
+                </div>
+            </td>
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.description}"></td>
+            <td>
+                <span th:if="${item.isComplete} == true" th:text="Yes" />
+                <span th:unless="${item.isComplete} == true" th:text="No" />
+            </td>
+            <td th:text="${item.createdAt}"></td>
+            <td th:text="${item.updatedAt}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p><a class="btn btn-outline-lightgrey" href="/create-todo">
+        <i class="bi bi-plus-square-fill"></i> Create a Task</a>
+    </p>
+</div>
+<script th:src="@{/webjars/bootstrap/5.2.2/js/bootstrap.min.js}"></script>
+</body>
+</html>
